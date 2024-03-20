@@ -77,18 +77,10 @@ int fib2Array(int staticArray[], int& size){//Проврека на фибана
     int ind = 0;
     for (int i = 0; i < size; i++) {//Пробежка по значениям цикла
         int x = staticArray[i];
-        // cout << i << endl << x;
-        // cout << x << " ";
+
         int len_i = countArray(x);
-        // cout << len_i;
         if (len_i >= 3) {//Условие на то, чтобы число было больше 3
             if (fibArray(len_i, x)) {//Проврека на фибоначи
-                // int size_sp = sizeof(staticArray)/sizeof(staticArray[0]);//Нахождение размера списка
-                // for(int l = 0; l < size; l++){
-                //     if (staticArray[l] == staticArray[i]){//Нахождение индекса числа фибоначи
-                // ind = l;//присвоение индекса переменной
-                // break;
-                // }
                 ind = i;
             }
         }
