@@ -26,24 +26,24 @@ int main()
     SetConsoleOutputCP(CP_UTF8);
     srand(time(0));
     int userinput;
-    int row, column;//ряд, столбец
+    int column;//ряд, столбец
     char menu;
-    cout << "Введите размер масива\n";
-    cin >> row >> column;
+    cout << "Введите размер квадратной матрицы: \n";
+    cin >> column;
 
-    int **Array = new int* [row];
-    for (int i = 0; i < row; i++) {
+    int **Array = new int* ;
+    for (int i = 0; i < column; i++) {
         Array[i] = new int[column];
     }
 
     cout << "Выберите способ заполнения массива:\n"
          << "1 Вручную\n"
-         << "2 Рандомно\n";
+         << "2 Случайно\n";
     while (true) {
         cin >> userinput;
         if (userinput == 1) {
             cout << "Вводите массив\n";
-            for (int i = 0; i < row; i++) {
+            for (int i = 0; i < column; i++) {
                 for (int i1 = 0; i1 < column; i1++) {
                     cin >> Array[i][i1];
                 }
@@ -53,7 +53,7 @@ int main()
         }
         if (userinput == 2) {
             int end = 10, start = 0;
-            for (int i = 0; i < row; i++) {
+            for (int i = 0; i < column; i++) {
                 for (int i1 = 0; i1 < column; i1++) {
                     Array[i][i1] = rand() % (end - start + 1) + start;
                 }
@@ -69,15 +69,13 @@ int main()
         cin >> menu;
         switch (menu) {
             case '1':
-                printArray(Array, row, column);
+                printArray(Array, column, column);
                 break;
 
             case '2':
-                cout << minpobArray(Array, row, column) << endl;
+                cout << minpobArray(Array, column, column) << endl;
                 break;
         }
     }
 
-    printArray(Array, row, column);
-    cout << "Hello World!\n";
 }
