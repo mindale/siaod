@@ -6,13 +6,6 @@ using namespace std;
 const int maxStaticSize = 10;
 
 
-void fillArray(int arr[], int n){//заполнение списка
-    for(int i = 0; i < n; i++){
-        cout << "Input value: ";
-        cin >> arr[i];
-    }
-}
-
 int printArray(int arrayToPrint[], int size)//Вывод спика
 {
     cout << " ";
@@ -51,18 +44,6 @@ int findArray(int staticArray[], int& size, int toFinstaticArrayNumber)//Нах�
     return -1;
 }
 
-bool fibArray(int len_i, int i) {//Ф-ия нахождения фиб.
-    int k = 1;
-    while (len_i + 1 != k) {//Цикл который перебирает значения, до тех пор, переменная k != к длинне числа
-        int x1 = (i / (int)pow(10, len_i - k)) % 10;//Разделение числа на цифры
-        if (len_i - k - 1 == 0)return false;
-        int x2 = (i / (int)pow(10, len_i - k - 1)) % 10;//Разделение числа на цифры
-        int x3 = (i / (int)pow(10, len_i - k - 2)) % 10;//Разделение числа на цифры
-        if (x1 + x2 == x3)return true;//Если 1ц + 2ц == 3ц, вывод
-        k++;
-    }
-    return false;
-}
 
 int countArray(int& n){//Нахождение длинны числа
     int len_i = 0;
@@ -73,42 +54,40 @@ int countArray(int& n){//Нахождение длинны числа
     return len_i;
 }
 
-int fib2Array(int staticArray[], int& size){//Проврека на фибаначи и вывод индекса
+int fibonachArray(int dinamArray[], int& size){//Проврека на фибаначи и вывод индекса
     int ind = 0;
     for (int i = 0; i < size; i++) {//Пробежка по значениям цикла
-        int x = staticArray[i];
-
+        int x = dinamArray[i];
         int len_i = countArray(x);
         if (len_i >= 3) {//Условие на то, чтобы число было больше 3
-            if (fibArray(len_i, x)) {//Проврека на фибоначи
-                ind = i;
+            int k = 1;
+            while (len_i + 1 != k) {//Цикл который перебирает значения, до тех пор, переменная k != к длинне числа
+                int x1 = (x / (int)pow(10, len_i - k)) % 10;//Разделение числа на цифры
+                if (len_i - k - 1 == 0)break;
+                int x2 = (x / (int)pow(10, len_i - k - 1)) % 10;//Разделение числа на цифры
+                int x3 = (x / (int)pow(10, len_i - k - 2)) % 10;//Разделение числа на цифры
+                if (x1 + x2 == x3)ind=i;break;//Если 1ц + 2ц == 3ц, вывод
+                k++;
             }
         }
     }
     return ind;
 }
 
-void dopolneniyeArray(int staticArray[], int size, int value){
-    for(int i = fib2Array(staticArray, size)+2 ; i < size+1; i++){
-        staticArray[i] = staticArray[i-1];
+void dopolneniyeArray(int dinamArray[], int size, int value){
+    for(int i = fibonachArray(dinamArray, size) + 2 ; i < size + 1; i++){
+        dinamArray[i] = dinamArray[i - 1];
     }
-    staticArray[fib2Array(staticArray, size)+1] = value;
+    dinamArray[fibonachArray(dinamArray, size) + 1] = value;
 }
 
 
 int main() {
-    // int dinamArray[] = {123, 232, 3545, 12358};//Список с числами
     SetConsoleOutputCP(CP_UTF8);
     int size = 0;
     int tempNumber;
     int result;
     int *dinamArray {new int[maxStaticSize]};// = {123, 234, 354};/
-//    delete [] dinamArray;
-//    int *numbers {new int[size]}
-    // cout << dinamArray;
-    // for(int i : dinamArray)
-    // fillArray(dinamArray, size);
-
 
     cout << "1. Вывод массива\n"
          << "2. Добавить элемент\n"
@@ -164,7 +143,7 @@ int main() {
                     cout << "Элемент" << tempNumber << "найден в позиции" << result << "\n";
                 break;
             case '5':
-                cout << fib2Array(dinamArray, size) << endl;
+                cout << fibonachArray(dinamArray, size) << endl;
                 break;
 
             case '6':
@@ -175,10 +154,11 @@ int main() {
                 printArray(dinamArray, size);
                 break;
             case '7':
-                switch (RemoveFromArray(dinamArray, size, fib2Array(dinamArray, size) - 1 ))
+                switch (RemoveFromArray(dinamArray, size, fibonachArray(dinamArray, size) - 1 ))
                 {
                     case 0:
                         cout << "Элемент перед фибоначи удален!\n";
+                        cout << "Вот так выглядит новый массив: " << printArray(dinamArray, size);
                         break;
                     case -1:
                         cout << "Массив переполнен\n";
@@ -191,7 +171,6 @@ int main() {
             case '0':
                 delete [] dinamArray;
                 return 0;
-                break;
             default:
                 cout << "Неверный ввод!\n";
                 cout << "1. Вывод массива\n"
@@ -206,7 +185,4 @@ int main() {
                 break;
         }
     }
-
-
-    return 0;
 }
