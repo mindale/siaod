@@ -5,6 +5,14 @@
 using namespace std;
 const int maxStaticSize = 10;
 
+void fillArray(int arr[], int n, int &size){//заполнение списка
+    if (2 <= n <= 4)cout << "Введите " << n << " числа/чисел: ";
+    if (n == 1) cout << "Введите число: ";
+    for(int i = 0; i < n; i++) {
+        cin >> arr[i];
+        size++;
+    }
+}
 
 int printArray(int arrayToPrint[], int size)//Вывод спика
 {
@@ -15,11 +23,11 @@ int printArray(int arrayToPrint[], int size)//Вывод спика
     return 0;
 }
 
-int addToArray(int staticArray[], int& size, int newNumber)//добавление нового элемента
+int addToArray(int dinArray[], int& size, int newNumber)//добавление нового элемента
 {
     if (size >= maxStaticSize)
         return -1;
-    staticArray[size] = newNumber;
+    dinArray[size] = newNumber;
     size++;
     return 0;
 }
@@ -55,7 +63,7 @@ int countArray(int& n){//Нахождение длинны числа
 }
 
 int fibonachArray(int dinamArray[], int& size){//Проврека на фибаначи и вывод индекса
-    int ind = 0;
+    int ind = -1;
     for (int i = 0; i < size; i++) {//Пробежка по значениям цикла
         int x = dinamArray[i];
         int len_i = countArray(x);
@@ -93,9 +101,10 @@ int main() {
          << "2. Добавить элемент\n"
          << "3. Удалить элемент\n"
          << "4. Найти элемент\n"
-         << "5. Индекс элемента массива, цифры которого (слева направо) образуют последовательность Фибоначчи.:\n"
-         << "6.  Вставить новый элемент после элемента, цифры которого упорядочены по возрастанию.\n"
+         << "5. Индекс элемента массива, цифры которого (слева направо) образуют последовательность Фибоначчи.\n"
+         << "6. Вставить новый элемент после элемента, цифры которого упорядочены по возрастанию.\n"
          << "7. Удалить число, которое расположено перед числом, цифры которого упорядочены по возрастанию\n"
+         << "8. Заполнить массив.\n"
          << "0. Выход\n";
 
 
@@ -143,7 +152,8 @@ int main() {
                     cout << "Элемент" << tempNumber << "найден в позиции" << result << "\n";
                 break;
             case '5':
-                cout << fibonachArray(dinamArray, size) << endl;
+                if (fibonachArray(dinamArray, size)==-1)cout<<"В массиве нету числа Фиббоначи!" << endl;
+                else cout << fibonachArray(dinamArray, size) << endl;
                 break;
 
             case '6':
@@ -167,6 +177,11 @@ int main() {
                         cout << "Элемент не обнаружен!\n";
                         break;
                 }
+                break;
+            case '8':
+                int n;
+                cout << "Введите размер массива "; cin >> n;
+                fillArray(dinamArray, n, size);
                 break;
             case '0':
                 delete [] dinamArray;

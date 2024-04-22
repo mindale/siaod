@@ -1,11 +1,17 @@
 #include <iostream>
 #include <cmath>
-#include <list>
 #include <windows.h>
 using namespace std;
 const int maxStaticSize = 10;
 
-
+void fillArray(int arr[], int n, int &size){//заполнение списка
+    if (2 <= n <= 4)cout << "Введите " << n << " числа/чисел: ";
+    if (n == 1) cout << "Введите число: ";
+    for(int i = 0; i < n; i++) {
+        cin >> arr[i];
+        size++;
+    }
+}
 
 int printArray(int arrayToPrint[], int size)//Вывод спика
 {
@@ -25,8 +31,7 @@ int addToArray(int staticArray[], int& size, int newNumber)//добавлени�
     return 0;
 }
 
-int RemoveFromArray(int staticArray[], int& size, int position)//удаление элемента
-{
+int RemoveFromArray(int staticArray[], int& size, int position){
     if (size <= 0)
         return -1;
     if (position >= size)
@@ -49,17 +54,18 @@ int findArray(int staticArray[], int& size, int toFinstaticArrayNumber)//Нах�
 
 int countArray(int& n){//Нахождение длинны числа
     int len_i = 0;
-    while (n > 0) {
-        n /= 10;
+    int temp_n = n;
+    while (temp_n > 0) {
+        temp_n /= 10;
         len_i++;
     }
     return len_i;
 }
 
 int fibonachArray(int staticArray[], int& size){//Проврека на фибаначи и вывод индекса
-    int ind = 0;
+    int ind = -1;
     for (int i = 0; i < size; i++) {//Пробежка по значениям цикла
-        int x = staticArray[i];
+        int &x = staticArray[i];
         int len_i = countArray(x);
         if (len_i >= 3) {//Условие на то, чтобы число было больше 3
             int k = 1;
@@ -84,26 +90,34 @@ void dopolneniyeArray(int staticArray[], int size, int value){//Ф-ия, доб�
     staticArray[fibonachArray(staticArray, size) + 1] = value;
 }
 
+int RemovefibArray(int staticArray[], int& size){
+    int position = fibonachArray(staticArray, size) - 1;
+    if (size <= 0)
+        return -1;
+    if (position >= size)
+        return -2;
+    for (int i = position; i < size - 1; i++)
+        staticArray[i] = staticArray[i + 1];
+    size--;
+    return 0;
+}
 
 int main() {
-    // int staticArray[] = {123, 232, 3545, 12358};//Список с числами
     SetConsoleOutputCP(CP_UTF8);
     int size = 0;
     int tempNumber;
     int result;
     int staticArray[maxStaticSize];// = {123, 234, 354};//
-    // cout << staticArray;
-    // for(int i : staticArray)
-    // fillArray(staticArray, size);
 
 
     cout << "1. Вывод массива\n"
          << "2. Добавить элемент\n"
          << "3. Удалить элемент\n"
          << "4. Найти элемент\n"
-         << "5. Индекс элемента массива, цифры которого (слева направо) образуют последовательность Фибоначчи.:\n"
+         << "5. Индекс элемента массива, цифры которого (слева направо) образуют последовательность Фибоначчи.\n"
          << "6. Вставить новое значение после Фибоначчи\n"
          << "7. Удалить элемент, стоящий перед Фибоначчи.\n"
+         << "8. Заполнить массив.\n"
          << "0. Выход\n";
 
 
@@ -151,7 +165,8 @@ int main() {
                     cout << "Элемент" << tempNumber << "найден в позиции" << result << "\n";
                 break;
             case '5':
-                cout << fibonachArray(staticArray, size) << endl;
+                if (fibonachArray(staticArray, size)==-1)cout<<"В массиве нету числа Фиббоначи!" << endl;
+                else cout << fibonachArray(staticArray, size) << endl;
                 break;
 
             case '6':
@@ -162,7 +177,7 @@ int main() {
                 printArray(staticArray, size);
                 break;
             case '7':
-                switch (RemoveFromArray(staticArray, size, fibonachArray(staticArray, size) - 1 ))
+                switch (RemovefibArray(staticArray, size))
                 {
                     case 0:
                         cout << "Элемент перед фибоначи удален!\n";
@@ -174,6 +189,11 @@ int main() {
                         cout << "Элемент не обнаружен!\n";
                         break;
                 }
+                break;
+            case '8':
+                int n;
+                cout << "Введите размер массива "; cin >> n;
+                fillArray(staticArray, n, size);
                 break;
             case '0':
                 return 0;
@@ -187,7 +207,7 @@ int main() {
                      << "5. Найти индекс элемента массива, цифры которого упорядочены по возрастанию\n"
                      << "6. Вставить новый элемент после элемента, цифры которого упорядочены по возрастанию\n"
                      << "7. Удалить число, которое расположено перед числом, цифры которого упорядочены по возрастанию\n"
-                     << "0. выход\n"
+                     << "0. Выход\n"
                      << "Выберите действие: ";
                 break;
         }

@@ -1,31 +1,21 @@
 #include <iostream>
 #include <cmath>
-#include <list>
 #include <windows.h>
 #include <vector>
 
 using namespace std;
 const int maxStaticSize = 10;
 
-bool fibArray(int len_i, int i) {//Ф-ия нахождения фиб.
-    int k = 1;
-    while (len_i + 1 != k) {//Цикл который перебирает значения, до тех пор, переменная k != к длинне числа
-        int x1 = (i / (int)pow(10, len_i - k)) % 10;//Разделение числа на цифры
-        if (len_i - k - 1 == 0)return false;
-        int x2 = (i / (int)pow(10, len_i - k - 1)) % 10;//Разделение числа на цифры
-        int x3 = (i / (int)pow(10, len_i - k - 2)) % 10;//Разделение числа на цифры
-        if (x1 + x2 == x3)return true;//Если 1ц + 2ц == 3ц, вывод
-        k++;
+void fillArray(vector<int>& arr, int n, int &size){//заполнение списка
+    if (2 <= n <= 4)cout << "Введите " << n << " числа/чисел: ";
+    if (n == 1) cout << "Введите число: ";
+    for(int i = 0; i < n; i++) {
+        cin >> arr[i];
+        size++;
     }
-    return false;
 }
 
-void fillArray(int arr[], int n){//заполнение списка
-    for(int i = 0; i < n; i++){
-        cout << "Input value: ";
-        cin >> arr[i];
-    }
-}
+
 
 int printArray(vector<int>& arrayToPrint, int& size)//Вывод спика
 {
@@ -73,41 +63,40 @@ int countArray(int& n){//Нахождение длинны числа
     return len_i;
 }
 
-int fib2Array(vector<int>& staticArray, int& size){//Проврека на фибаначи и вывод индекса
-    int ind = 0;
+
+int fibonachArray(vector<int>& vecArray, int& size){//Проврека на фибаначи и вывод индекса
+    int ind = -1;
     for (int i = 0; i < size; i++) {//Пробежка по значениям цикла
-        int x = staticArray[i];
+        int x = vecArray[i];
         int len_i = countArray(x);
         if (len_i >= 3) {//Условие на то, чтобы число было больше 3
-            if (fibArray(len_i, x)) {//Проврека на фибоначи
-                ind = i;
+            int k = 1;
+            while (len_i + 1 != k) {//Цикл который перебирает значения, до тех пор, переменная k != к длинне числа
+                int x1 = (x / (int)pow(10, len_i - k)) % 10;//Разделение числа на цифры
+                if (len_i - k - 1 == 0)break;
+                int x2 = (x / (int)pow(10, len_i - k - 1)) % 10;//Разделение числа на цифры
+                int x3 = (x / (int)pow(10, len_i - k - 2)) % 10;//Разделение числа на цифры
+                if (x1 + x2 == x3)ind=i;break;//Если 1ц + 2ц == 3ц, вывод
+                k++;
             }
         }
     }
     return ind;
 }
 
+
 void dopolneniyeArray(vector<int>& staticArray, int& size, int value){
-//    if (fib2Array(staticArray, size) == 0) return 0;
-//    cout << "FIB Number is "<< fib2Array(staticArray, size);
     size++;
-//    staticArray.push_back(value);
-    staticArray.insert(staticArray.begin() + fib2Array(staticArray, size) + 1, value);
-//    return 0;
+    staticArray.insert(staticArray.begin() + fibonachArray(staticArray, size) + 1, value);
 }
 
 
 int main() {
-    // int staticArray[] = {123, 232, 3545, 12358};//Список с числами
     vector<int> staticArray;
     SetConsoleOutputCP(CP_UTF8);
     int size = 0;
     int tempNumber;
     int result;
-//    int staticArray[maxStaticSize];// = {123, 234, 354};//
-    // cout << staticArray;
-    // for(int i : staticArray)
-    // fillArray(staticArray, size);
 
 
     cout << "1. Вывод массива\n"
@@ -115,8 +104,9 @@ int main() {
          << "3. Удалить элемент\n"
          << "4. Найти элемент\n"
          << "5. Индекс элемента массива, цифры которого (слева направо) образуют последовательность Фибоначчи.:\n"
-         << "6. Вставить новый элемент после элемента, цифры которого упорядочены по возрастанию\n"
+         << "6. Вставить новый элемент после элемента, цифры которого упорядочены по возрастанию.\n"
          << "7. Удалить число, которое расположено перед числом, цифры которого упорядочены по возрастанию\n"
+         << "8. Заполнить массив.\n"
          << "0. Выход\n";
 
 
@@ -166,12 +156,13 @@ int main() {
                     cout << "Элемент" << tempNumber << "найден в позиции" << result << "\n";
                 break;
             case '5':
-                cout << fib2Array(staticArray, size) << endl;
+                if (fibonachArray(staticArray, size)==-1)cout<<"В массиве нету числа Фиббоначи!" << endl;
+                else cout << fibonachArray(staticArray, size) << endl;
                 break;
 
             case '6':
 
-                if (fib2Array(staticArray, size) == 0) cout << "Числа Фибоначи нету!";
+                if (fibonachArray(staticArray, size) == 0) cout << "Числа Фибоначи нету!";
                 else{
                     cout << "Введите число, которое хотите добавить после индекса Фибоначи:";
                     cin >> tempNumber;
@@ -180,7 +171,7 @@ int main() {
                 }
                 break;
             case '7':
-                switch (RemoveFromArray(staticArray, size, fib2Array(staticArray, size)-1 ))
+                switch (RemoveFromArray(staticArray, size, fibonachArray(staticArray, size) - 1 ))
                 {
                     case 0:
                         cout << "Элемент перед фибоначи удален!\n";
@@ -192,6 +183,11 @@ int main() {
                         cout << "Элемент не обнаружен!\n";
                         break;
                 }
+                break;
+            case '8':
+                int n;
+                cout << "Введите размер массива "; cin >> n;
+                fillArray(staticArray, n, size);
                 break;
             case '0':
                 return 0;
