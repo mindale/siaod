@@ -4,29 +4,25 @@
 using namespace std;
 
 #define N 3 // Количество уравнений
+void handcompl_Array(int num, float** points){
+    for(int i = 0; i < num; i++){
+        points[i] = new float[2];
+        cout << "Введите x и y:";
+        cin >> points[i][0];
+        cin >> points[i][1];
+    }
+}
 
-void radius_Array(int num){
-    float x[num];
-    float y[num];
-    for(int i = 0; i < num; i++){
-        for(int j = i+1; j < num; j++){
-            if (x[i] > x[j] or y[i] > y[j]){
-                swap(x[i], x[j]);
-                swap(y[i], y[j]);
-            }
-        }
-    }
-    for(int i = 0; i < num; i++){
-        cout << "Введите x и y:"; cin >> x[i]; cin >> y[i];
-    }
+
+void rad_center_Array(int num, float** points){
     float A[N][N] = {
-            {2*x[0], 2*y[0], 1},
-            {2*x[1], 2*y[1], 1},
-            {2*x[2], 2*y[2], 1}
+            {2 * points[0][0], 2 * points[0][1], 1},
+            {2 * points[1][0], 2 * points[1][1], 1},
+            {2 * points[2][0], 2 * points[2][1], 1}
     };
-    float b0 =-(pow(x[0],2) + pow(y[0],2));
-    float b1 = -(pow(x[1],2)+pow(y[1],2));
-    float b2 = -(pow(x[2],2) + pow(y[2],2));
+    float b0 =-(pow(points[0][0], 2) + pow(points[0][1], 2));
+    float b1 = -(pow(points[1][0], 2) + pow(points[1][1], 2));
+    float b2 = -(pow(points[2][0], 2) + pow(points[2][1], 2));
 
     float B[N] = {b0, b1, b2};
 
@@ -51,30 +47,25 @@ void radius_Array(int num){
         }
         X[i] /= A[i][i];
     }
-
-    // Выводим решение
-//    for (int i = 0; i < N; i++) {
-//        std::cout << "X[" << i << "] = " << X[i] << std::endl;//x[0] = a; x[1] = b; x[2] = c;
-//
-//    }
-    float Xc = -(X[0]);
-    float Yc = -(X[1]);
-    float R = sqrt(pow(Xc, 2) + pow(Yc,2) - X[2]);
-//    float ans[3] = {Xc,Yc,R};
-//    return Xc, Yc, R;
-    cout << "X и Y центра окружности: "; cout <<  Xc;cout << ":";cout << Yc; cout << endl;
+    float *center = new float[2];
+    center[0] = -(X[0]); center[1] = -(X[1]);
+    float R = sqrt(pow(center[0], 2) + pow(center[1], 2) - X[2]);
+    cout << "X и Y центра окружности: "; cout << center[0]; cout << ":";cout << center[1]; cout << endl;
     cout << "Радиус окружности: "; cout << R;
 
 }
 
-float center_Array(float x, float y, float rad){
-
-}
 
 int main(){
     SetConsoleOutputCP(CP_UTF8);
     int num;
+    char menu;
     cout << "Введите кол-во точек:"; cin >> num;
-    radius_Array(num);
-//    cout << R;
+
+    float **points = new float*[num];
+    if (num > 3){
+
+    }
+    handcompl_Array(num, points);
+    rad_center_Array(num, points);
 }
