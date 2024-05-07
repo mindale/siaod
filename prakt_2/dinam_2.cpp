@@ -5,18 +5,7 @@ using namespace std;
 
 #define N 3 // Количество уравнений
 
-float radius_Array(float x[], float y[]) {
-    float A[N][N] = {
-            {2*x[0], 2*y[0], 1},
-            {2*x[1], 2*y[1], 1},
-            {2*x[2], 2*y[2], 1}
-    };
-    float b0 =-(pow(x[0],2) + pow(y[0],2));
-    float b1 = -(pow(x[1],2)+pow(y[1],2));
-    float b2 = -(pow(x[2],2) + pow(y[2],2));
-    float B[N] = {b0, b1, b2};
-
-
+float radius_Array(float A[N][N], float B[N]) {
     float X[N]; // Массив для хранения решения
 
     // Прямой ход метода Гаусса
@@ -59,9 +48,17 @@ int main(){
     for(int i = 0; i < num; i++){
         cout << "Введите x и y:"; cin >> x[i]; cin >> y[i];
     }
+    float A[N][N] = {
+            {2*x[0], 2*y[0], 1},
+            {2*x[1], 2*y[1], 1},
+            {2*x[2], 2*y[2], 1}
+    };
+    float b0 =-(pow(x[0],2) + pow(y[0],2));
+    float b1 = -(pow(x[1],2)+pow(y[1],2));
+    float b2 = -(pow(x[2],2) + pow(y[2],2));
+    float B[N] = {b0, b1, b2};
 
-
-    float R = radius_Array(x,y);
+    float R = radius_Array(A, B);
     cout << R;
 
 
