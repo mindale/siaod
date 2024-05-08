@@ -14,7 +14,7 @@ void handcompl_Array(int num, float** points){
 }
 
 
-void rad_center_Array(int num, float** points){
+void rad_center_Array(float** points){
     float A[N][N] = {
             {2 * points[0][0], 2 * points[0][1], 1},
             {2 * points[1][0], 2 * points[1][1], 1},
@@ -64,8 +64,10 @@ int main(){
 
     float **points = new float*[num];
     if (num > 3){
+        for(int i = 0; i < num; i++){
 
+        }
     }
     handcompl_Array(num, points);
-    rad_center_Array(num, points);
+    rad_center_Array(points);
 }
